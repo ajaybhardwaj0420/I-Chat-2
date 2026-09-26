@@ -5,7 +5,7 @@ import https from "node:https";
 
 // this will send a GET request in every 14 minutes to the health end-point
 
-const job = new CronJob("*/14****", function () {
+const job = new CronJob("*/14 * * * *", function () {
   const base = process.env.FRONTEND_URL;
   if (!base) return;
   const url = new URL("/health", base).href;
