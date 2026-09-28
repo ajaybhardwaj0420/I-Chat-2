@@ -1,0 +1,20 @@
+// import express from "express";
+// import { protectRoute } from "../middleware/auth.middleware.js";
+// import { checkAuth } from "../controllers/auth.controller.js";
+
+// const router = express.Router();
+
+// // /api/auth/check
+// router.get("/check", protectRoute, checkAuth); // middleware
+
+// export default router;
+
+import express from "express";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import checkAuth from "../controllers/auth.controller.js";
+
+const router = express.Router();
+// /api/auth.check
+router.get("/check", protectRoute, checkAuth);
+
+export default router;

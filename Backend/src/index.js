@@ -12,7 +12,9 @@ import { clerkMiddleware } from "@clerk/express"; //npm install @clerk/nextjs
 import User from "./models/user.model.js";
 import { connectDB } from "./lib/db.js";
 import job from "./lib/cron.js";
+
 import clerkWebhook from "./webhooks/clerk.webhooks.js";
+import authRoutes from "./routes/auth.route.js";
 
 const app = express();
 
@@ -37,6 +39,8 @@ User();
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true });
 });
+
+app.use("/api/auth", authRoutes);
 
 // if the public directory is exist m serve the static file
 // this is for production build
