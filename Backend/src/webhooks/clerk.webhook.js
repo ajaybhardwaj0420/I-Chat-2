@@ -8,13 +8,13 @@ router.post("/", async (req, res) => {
   try {
     const signingSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
     if (!signingSecret) {
-      res.status(503).json({ message: "Webhook secret is not provide " });
+      res.status(503).json({ message: "Webhook secret is not provided" });
       return;
     }
 
-    // clerk verify the expects of a web request with the raw body : express.raw gives a Buffer
+    // clerk's verifier expects a Web Request with the raw body; express.raw gives a Buffer.
     const payload = Buffer.isBuffer(req.body)
-      ? req.body.toString("utf-8")
+      ? req.body.toString("utf8")
       : String(req.body);
     const request = new Request("http://internal/webhooks/clerk", {
       method: "POST",
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
       body: payload,
     });
 
-    // throw the signature is wrong or the body was tampered with; only then we do trust evt.
+    // throws if the signature is wrong or the body was tampered with; only then do we trust evt.
     const evt = await verifyWebhook(request, { signingSecret });
 
     if (evt.type === "user.created" || evt.type === "user.updated") {
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
           ?.email_address ?? u.email_addresses?.[0]?.email_address;
 
       const fullName =
-        [u.first_name, u.last_name].filter(Boolean).join("") ||
+        [u.first_name, u.last_name].filter(Boolean).join(" ") ||
         u.username ||
         email?.split("@")[0];
 
@@ -50,8 +50,8 @@ router.post("/", async (req, res) => {
 
     res.status(200).json({ received: true });
   } catch (error) {
-    console.error("Error in clerk webhook:", error);
-    res.status(400).json({ message: "Webhook verification is failed " });
+    console.error("Error in Clerk webhook:", error);
+    res.status(400).json({ message: "Webhook verification failed" });
   }
 });
 

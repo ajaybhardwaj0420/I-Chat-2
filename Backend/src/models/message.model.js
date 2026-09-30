@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
-import { Message } from "./message.model";
 
 // messageSchema needs a sender or a receiver to chat
 
 const messageSchema = new mongoose.Schema(
   {
     senderId: {
-      type: mongoose.Schema.Types.ObjectId,  // it is referance 
+      type: mongoose.Schema.Types.ObjectId, // it is referance
       ref: "User", // to userModel
       required: true,
     },
